@@ -185,32 +185,32 @@ class UserController {
     );
   }
 
-  getUsersStorage(){
+  getUsersStorage() {
     let users = [];
 
-    if(sessionStorage.getItem("users")){
-      users = JSON.parse(sessionStorage.getItem("users"))
+    if (localStorage.getItem("users")) {
+      users = JSON.parse(localStorage.getItem("users"));
     }
 
     return users;
   }
 
-  selectAll(){
+  selectAll() {
     let users = this.getUsersStorage();
 
-    users.forEach(dataUser => {
+    users.forEach((dataUser) => {
       let user = new User();
       user.loadFromJSON(dataUser);
       this.addLine(user);
-    })
+    });
   }
 
-  insert(data){
+  insert(data) {
     let users = this.getUsersStorage();
 
     users.push(data);
 
-    sessionStorage.setItem("users", JSON.stringify(users));
+    localStorage.setItem("users", JSON.stringify(users));
   }
 
   addLine(dataUser) {
@@ -241,12 +241,12 @@ class UserController {
 
   addEventsTr(tr) {
     tr.querySelector(".btn-delete").addEventListener("click", (e) => {
-        if(confirm("Deseja realmente excluir?")) {
-          tr.remove();
-  
-          this.updateCount();
-        }
-      })
+      if (confirm("Deseja realmente excluir?")) {
+        tr.remove();
+
+        this.updateCount();
+      }
+    });
 
     tr.querySelector(".btn-edit").addEventListener("click", (e) => {
       let json = JSON.parse(tr.dataset.user);
