@@ -20,7 +20,7 @@ class UserController {
           values.photo = content;
 
           this.addLine(values);
-          
+
           this.formEl.reset();
 
           btn.disabled = false;
@@ -62,8 +62,16 @@ class UserController {
 
   getValues() {
     let user = {};
+    let isValid = true;
 
     [...this.formEl.elements].forEach(function (field, index) {
+      if (
+        ["name", "email", "password"].indexOf(field.name) > -1 &&
+        !field.value
+      ) {
+        field.parentElement.classList.add("has-error");
+        isValid = false;
+      }
       if (field.name === "gender") {
         if (field.checked) {
           user[field.name] = field.value;
@@ -74,6 +82,10 @@ class UserController {
         user[field.name] = field.value;
       }
     });
+
+    if (!isValid) {
+      return false;
+    }
 
     return new User(
       user.name,
@@ -91,10 +103,12 @@ class UserController {
     let tr = document.createElement("tr");
 
     tr.innerHTML = `
-        <td><img src="${dataUser.photo}" alt="User Image" class="img-circle img-sm"></td>
+        <td><img src="${
+          dataUser.photo
+        }" alt="User Image" class="img-circle img-sm"></td>
         <td>${dataUser.name}</td>
         <td>${dataUser.email}</td>
-        <td>${(dataUser.admin) ? 'Sim' : 'Não'}</td>
+        <td>${dataUser.admin ? "Sim" : "Não"}</td>
         <td>${Utils.dateFormat(dataUser.register)}</td>
         <td>
             <button type="button" class="btn btn-primary btn-xs btn-flat">Editar</button>
